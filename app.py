@@ -1,7 +1,14 @@
 import streamlit as st
 import pandas as pd
 
-st.title("Análisis de Ausencias")
+# Agregar logo y título en la parte superior izquierda
+col1, col2 = st.columns([1, 5])
+
+with col1:
+    st.image("logo.jpeg", width=120)  # Ajusta el tamaño del logo
+
+with col2:
+    st.title("📊 Análisis de Ausencias")
 
 st.write("Sube los siguientes 5 archivos en formato Excel para realizar el análisis:")
 
