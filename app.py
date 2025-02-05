@@ -66,7 +66,7 @@ if all([archivo_hcm, archivo_fraccionadas_ps, archivo_total_ps, archivo_dinero])
                                                                right_on=["ID", "Fecha Inicio Real"], how="left", indicator=True).query('_merge == "left_only"').loc[:, df_no_en_fraccionadas.columns]
 
     df_no_en_dinero = df_no_en_fraccionadas_total.merge(df_dinero, left_on=["PERSON_NUMBER", "START_DATE"],
-                                                         right_on=["Id Empleado", "Fecha Inicio"], how="left", indicator=True).query('_merge == "left_only"').loc[:, df_no_en_fraccionadas_total.columns]
+                                                         right_on=["ID", "Fecha Inicio"], how="left", indicator=True).query('_merge == "left_only"').loc[:, df_no_en_fraccionadas_total.columns]
     #Inconsistencias duración
 
     df_si_en_fraccionadas = df_hcm.merge(df_fraccionadas_ps, left_on=["PERSON_NUMBER", "START_DATE"],
