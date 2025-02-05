@@ -18,7 +18,7 @@ archivo_fraccionadas_ps = st.file_uploader("📂 Archivo Fraccionadas PeopleSoft
 archivo_total_ps = st.file_uploader("📂 Archivo Total PeopleSoft", type=["xlsx"])
 archivo_dinero = st.file_uploader("📂 Archivo Dinero", type=["xlsx"])
 
-if all([archivo_hcm, archivo_fraccionadas_ps, archivo_total_ps, archivo_dinero_seg, archivo_dinero_mar]):
+if all([archivo_hcm, archivo_fraccionadas_ps, archivo_total_ps, archivo_dinero]):
     st.success("✅ ¡Archivos cargados con éxito! Procesando...")
 
     # Leer archivos
