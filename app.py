@@ -23,8 +23,8 @@ if all([archivo_hcm, archivo_fraccionadas_ps, archivo_total_ps, archivo_dinero])
 
     # Leer archivos
     df_hcm = pd.read_excel(archivo_hcm, skiprows=1, engine="openpyxl")
-    df_fraccionadas_ps = pd.read_excel(archivo_fraccionadas_ps, engine="openpyxl")
-    df_total_ps = pd.read_excel(archivo_total_ps, engine="openpyxl")
+    df_fraccionadas_ps = pd.read_excel(archivo_fraccionadas_ps, skiprows=1, engine="openpyxl")
+    df_total_ps = pd.read_excel(archivo_total_ps, skiprows=1, engine="openpyxl")
     df_dinero = pd.read_excel(archivo_dinero, skiprows=1, engine="openpyxl")
 
     # Ajustar tipos de datos
