@@ -16,8 +16,7 @@ st.write("Sube los siguientes 5 archivos en formato Excel para realizar el anál
 archivo_hcm = st.file_uploader("📂 Archivo HCM", type=["xlsx"])
 archivo_fraccionadas_ps = st.file_uploader("📂 Archivo Fraccionadas PeopleSoft", type=["xlsx"])
 archivo_total_ps = st.file_uploader("📂 Archivo Total PeopleSoft", type=["xlsx"])
-archivo_dinero_seg = st.file_uploader("📂 Archivo Dinero Segovia", type=["xlsx"])
-archivo_dinero_mar = st.file_uploader("📂 Archivo Dinero Marmato", type=["xlsx"])
+archivo_dinero = st.file_uploader("📂 Archivo Dinero", type=["xlsx"])
 
 if all([archivo_hcm, archivo_fraccionadas_ps, archivo_total_ps, archivo_dinero_seg, archivo_dinero_mar]):
     st.success("✅ ¡Archivos cargados con éxito! Procesando...")
@@ -26,17 +25,14 @@ if all([archivo_hcm, archivo_fraccionadas_ps, archivo_total_ps, archivo_dinero_s
     df_hcm = pd.read_excel(archivo_hcm, skiprows=1, engine="openpyxl")
     df_fraccionadas_ps = pd.read_excel(archivo_fraccionadas_ps, engine="openpyxl")
     df_total_ps = pd.read_excel(archivo_total_ps, engine="openpyxl")
-    df_dinero_seg = pd.read_excel(archivo_dinero_seg, skiprows=6, engine="openpyxl")
-    df_dinero_mar = pd.read_excel(archivo_dinero_mar, skiprows=6, engine="openpyxl")
+    df_dinero = pd.read_excel(archivo_dinero, skiprows=1, engine="openpyxl")
 
     # Ajustar tipos de datos
     df_hcm['START_DATE'] = pd.to_datetime(df_hcm['START_DATE'], format='%d/%m/%Y')
     df_hcm['END_DATE'] = pd.to_datetime(df_hcm['END_DATE'], format='%d/%m/%Y')
     df_hcm['PER_ABSENCE_ENTRY_ID'] = df_hcm['PER_ABSENCE_ENTRY_ID'].astype(str)
     df_hcm['DURATION'] = round(df_hcm['DURATION'], 2)
-
-    df_dinero = pd.concat([df_dinero_seg, df_dinero_mar], ignore_index=True)
-    df_dinero['Fecha Inicio Disfrute'] = pd.to_datetime(df_dinero['Fecha Inicio Disfrute'], format='%Y-%m-%d')
+    #df_dinero['Fecha Inicio Disfrute'] = pd.to_datetime(df_dinero['Fecha Inicio Disfrute'], format='%Y-%m-%d')
 
     # Identificar duplicados en HCM
     duplicados_hcm = df_hcm[df_hcm.duplicated(subset=["PER_ABSENCE_ENTRY_ID"], keep=False)]
@@ -70,7 +66,8 @@ if all([archivo_hcm, archivo_fraccionadas_ps, archivo_total_ps, archivo_dinero_s
                                                                right_on=["ID", "Fecha Inicio Real"], how="left", indicator=True).query('_merge == "left_only"').loc[:, df_no_en_fraccionadas.columns]
 
     df_no_en_dinero = df_no_en_fraccionadas_total.merge(df_dinero, left_on=["PERSON_NUMBER", "START_DATE"],
-                                                         right_on=["Id Empleado", "Fecha Inicio Disfrute"], how="left", indicator=True).query('_merge == "left_only"').loc[:, df_no_en_fraccionadas_total.columns]
+                                                         right_on=["Id Empleado", "Fecha Inicio"], how="left", indicator=True).query('_merge == "left_only"').loc[:, df_no_en_fraccionadas_total.columns]
+    #Inconsistencias duración
 
     df_si_en_fraccionadas = df_hcm.merge(df_fraccionadas_ps, left_on=["PERSON_NUMBER", "START_DATE"],
                                          right_on=["ID", "Fecha Inicio"], how="inner")
